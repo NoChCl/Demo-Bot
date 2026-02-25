@@ -85,8 +85,9 @@ public class SDSSwerveModule {
       m_turnMotorSim = new SparkSim(m_turnMotor, DCMotor.getNEO(1));
       RobotContainer.GLOBAL_SIMULATED_BATTERY.registerPowerDrain(this::getSimulatedDrivePowerDrain);
       RobotContainer.GLOBAL_SIMULATED_BATTERY.registerPowerDrain(this::getSimulatedTurnPowerDrain);
-
     }
+
+    // SmartDashboard.getNum
   }
 
   public double getSimulatedDrivePowerDrain() {

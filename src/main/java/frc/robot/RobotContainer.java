@@ -116,6 +116,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_robotDrive.setDefaultCommand(m_robotDrive.defaultControllerCommand(m_driverJoystick));
+    // m_robotDrive.setDefaultCommand(m_robotDrive.testVelocityCommand());
 
     m_ledStrip.setDefaultCommand(
         new ConditionalCommand(

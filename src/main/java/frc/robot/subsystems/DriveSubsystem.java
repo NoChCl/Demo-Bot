@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 
 import com.ctre.phoenix6.hardware.Pigeon2;
-import com.ctre.phoenix6.sim.Pigeon2SimState;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,8 +18,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.motors.SDSSwerveModule;
 // import frc.robot.sensors.LimelightHelpers; // this is causing an incomprehensible build error that i am not dealing with rn
@@ -288,6 +285,10 @@ public class DriveSubsystem extends SubsystemBase {
       Controller.applyDriveRotationFilters(controller::getRightX),
       false
     ), this);
+  }
+
+  public Command testVelocityCommand() {
+    return new RunCommand(() -> this.drive(1, 1, 0, false), this);
   }
 
   public void drive(ChassisSpeeds speeds) {
