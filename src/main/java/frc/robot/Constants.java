@@ -4,7 +4,17 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+import static edu.wpi.first.units.Units.Milliseconds;
+import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecondPerSecond;
+import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.Seconds;
 
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkFlex;
@@ -23,8 +33,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularAcceleration;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearAcceleration;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.subsystems.LedStrip.LedStripConfig;
 import frc.robot.subsystems.motors.SDSSwerveModule.SDSSwerveModuleConfig;
@@ -47,8 +62,6 @@ public final class Constants {
     IntakeDeployment
   }
 
-  public static final boolean InvertGravity = true;
-
   public static boolean isFeatureEnabled(Feature[] features, Feature featureToTest) {
     for (int i = 0; i < features.length; i++) {
       var feat = features[i];
@@ -67,8 +80,8 @@ public final class Constants {
   public static final boolean UseTestBot = true;
 
   public static final class GenericConstants {
-    public static final double MotorPositionControlAllowableError = Math.PI / 2;
-    public static final double MotorVelocityControlAllowableError = 20;
+    public static final Angle kMotorPositionControlAllowableError = Radians.of(Math.PI / 2);
+    public static final AngularVelocity kMotorVelocityControlAllowableError = RPM.of(100);
   }
 
   public static final class DriveConstants {
@@ -84,10 +97,10 @@ public final class Constants {
       public static final boolean kBackLeftDriveInverted =   false;
       public static final boolean kBackRightDriveInverted =  false;
 
-      public static final double kFrontLeftChassisAngularOffset  = 0.7789029;
-      public static final double kFrontRightChassisAngularOffset = 0.3413826;
-      public static final double kBackLeftChassisAngularOffset   = 0.9801169;
-      public static final double kBackRightChassisAngularOffset  = 0.3838108;
+      public static final Angle kFrontLeftChassisAngularOffset  = Rotations.of(0.7789029);
+      public static final Angle kFrontRightChassisAngularOffset = Rotations.of(0.3413826);
+      public static final Angle kBackLeftChassisAngularOffset   = Rotations.of(0.9801169);
+      public static final Angle kBackRightChassisAngularOffset  = Rotations.of(0.3838108);
 
       public static final SDSSwerveModuleConfig frontLeftSwerveConfig = new SDSSwerveModuleConfig(
           DriveConstants.kFrontLeftDriveMotorPort,
@@ -127,10 +140,10 @@ public final class Constants {
       public static final boolean kBackLeftDriveInverted   = !false;
       public static final boolean kBackRightDriveInverted  = !false;
 
-      public static final double kFrontLeftChassisAngularOffset  = 0.7006581;
-      public static final double kFrontRightChassisAngularOffset = 0.4643519;
-      public static final double kBackLeftChassisAngularOffset   = 0.2181360;
-      public static final double kBackRightChassisAngularOffset  = 0.1978697;
+      public static final Angle kFrontLeftChassisAngularOffset  = Rotations.of(0.7006581);
+      public static final Angle kFrontRightChassisAngularOffset = Rotations.of(0.4643519);
+      public static final Angle kBackLeftChassisAngularOffset   = Rotations.of(0.2181360);
+      public static final Angle kBackRightChassisAngularOffset  = Rotations.of(0.1978697);
 
       public static final SDSSwerveModuleConfig frontLeftSwerveConfig = new SDSSwerveModuleConfig(
           DriveConstants.kFrontLeftDriveMotorPort,
@@ -193,29 +206,29 @@ public final class Constants {
     public static final int kBackRightTurningMotorPort  = 2;
     //#endregion
 
-    public static final double kDrivePeriod = TimedRobot.kDefaultPeriod;
+    public static final Time kDrivePeriod = Seconds.of(TimedRobot.kDefaultPeriod);
 
-    public static final double kTrackWidthMeters = Units.inchesToMeters(22); // Distance between centers of right and left wheels on robot - Was .5
-    public static final double kWheelBaseMeters  = Units.inchesToMeters(21.875); // Distance between front and back wheels on robot - Was .7
+    public static final Distance kTrackWidth = Inches.of(22); // Distance between centers of right and left wheels on robot - Was .5
+    public static final Distance kWheelBase  = Inches.of(21.875); // Distance between front and back wheels on robot - Was .7
   
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-        new Translation2d(kWheelBaseMeters / 2, kTrackWidthMeters / 2),
-        new Translation2d(kWheelBaseMeters / 2, -kTrackWidthMeters / 2),
-        new Translation2d(-kWheelBaseMeters / 2, kTrackWidthMeters / 2),
-        new Translation2d(-kWheelBaseMeters / 2, -kTrackWidthMeters / 2)
+        new Translation2d(kWheelBase.div(2), kTrackWidth.div(2)),
+        new Translation2d(kWheelBase.div(2), kTrackWidth.div(2).unaryMinus()),
+        new Translation2d(kWheelBase.div(2).unaryMinus(), kTrackWidth.div(2)),
+        new Translation2d(kWheelBase.div(2).unaryMinus(), kTrackWidth.div(2).unaryMinus())
       );
 
     public static final boolean kGyroReversed = false;
 
-    public static final double kMaxSpeedMetersPerSecond = 4.8;
-    public static final double kMaxAngularSpeedRadPerSecond = 2 * Math.PI;
+    public static final LinearVelocity kMaxSpeed = MetersPerSecond.of(4.8);
+    public static final AngularVelocity kMaxAngularSpeed = RadiansPerSecond.of(2 * Math.PI);
   }
 
   public static final class FeederConstants {
     public static final int kMotorCanId = 13;
 
     public static final class Control {
-      public static final double TargetSpeed = 1000;
+      public static final AngularVelocity kTargetSpeed = RPM.of(1000);
     }
   }
 
@@ -223,22 +236,22 @@ public final class Constants {
     public static final int kMotorCanId = 14;
 
     public static final class Control {
-      public static final double RetractedPosition = 100;
-      public static final double ExtendedPosition = 0;
+      public static final Angle kRetractedPosition = Rotations.of(100);
+      public static final Angle kExtendedPosition  = Rotations.zero();
     }
   }
 
   public static final class IntakeConstants {
     public static final int kMotorCanId = 10;
     public static final int kDeploymentMotorCanId = 15;
-    public static final double kMotorFreeSpeed = 4600;
+    public static final AngularVelocity kMotorFreeSpeed = RPM.of(4600);
 
     public static final class Control {
-      public static final double IntakeSpeed   = 3000;
-      public static final double DispenseSpeed = -3000;
+      public static final AngularVelocity kIntakeSpeed   = RPM.of(3000);
+      public static final AngularVelocity kDispenseSpeed = RPM.of(-3000);
 
-      public static final double DeployedPosition  = Math.PI / 2;
-      public static final double RetractedPosition = 0;
+      public static final Angle kDeployedPosition  = Radians.of(Math.PI / 2);
+      public static final Angle kRetractedPosition = Radians.zero();
     }
   }
 
@@ -246,58 +259,57 @@ public final class Constants {
     public static final int kMotorCanId = 12;
 
     public static final class Control {
-      public static final double allowableError = Math.PI / 8; // Can be off Math.PI / 8 of target to be considered "at target";
+      public static final Angle kAllowableError = Radians.of(Math.PI / 8);
 
-      public static final double indexerStdStepSize = Math.PI / 2;
+      public static final Angle kStepSize = Radians.of(Math.PI / 2);
 
-      public static final double stepWaitTime = 0.25; // seconds
+      public static final Time kStepWaitTime = Seconds.of(0.25);
     }
   }
 
   public static final class ShooterConstants {
      public static final int kMotorCanId = 9;
 
-     public static final double kFreeSpeedRpm = 5600;
+     public static final AngularVelocity kFreeSpeed = RPM.of(5600);
 
      public static final class Control {
-      public static final double allowableError = 10; // RPM
+      public static final AngularVelocity kAllowableError = RPM.of(100);
      }
 
-     public static final double targetSpeed = 5000;
+     public static final AngularVelocity kTargetSpeed = RPM.of(5000);
   }
 
   public static final class ColorSensorConstants {
-    public static final int sensorId = 0;
+    public static final int kSensorId = 0;
 
-    public static final int historyBufferSize = 256;
+    public static final int kHistoryBufferSize = 256;
   }
 
   public static final class TrackerConstants {
-    public static final int derivativeWindow = 15; // may need adjustments idk
+    public static final int kDerivativeWindow = 15; // may need adjustments idk
     public static final int calculateEndShift(int x) {return (x * 2) - 1;}
 
-    public static final float debounceTimeSeconds = 0.3f; // will need to be adjusted. 0.5f low frequency 0.2f high frequency
-    public static final float allowableError = 0.1f;
+    public static final Time kDebounceTimeSeconds = Milliseconds.of(300); // will need to be adjusted. 0.5f low frequency 0.2f high frequency
+    public static final float kAllowableError = 0.1f;
 
-    public static final float settleTimeSeconds = 2f; // Block detections on boot for this amount of time to allow buffers to populate before making decisions
+    public static final Time kSettleTime = Seconds.of(2); // Block detections on boot for this amount of time to allow buffers to populate before making decisions
   }
 
   public static final class GyroConstants {
-    public static final Angle flatThreshold = Radians.of(Math.PI / 8);
+    public static final Angle kFlatThreshold = Radians.of(Math.PI / 8);
 
-    public static final Angle TargetAngleAllowableError = Radians.of(Math.PI / 8);
+    public static final Angle kTargetAngleAllowableError = Radians.of(Math.PI / 8);
   }
 
   public static final class ModuleConstants {
-    public static final double kDrivingMotorFreeSpeedRps = NeoMotorContants.kVortexFreeSpeedRpm / 60;
-    public static final double kWheelDiameterMeters = 0.0762;
-    public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
+    public static final Distance kWheelDiameter = Meters.of(0.0762);
+    public static final Distance kWheelCircumference = kWheelDiameter.times(Math.PI);
 
     public static final int kDrivingMotorPinionTeeth = 14;
     public static final double kDrivingMotorReduction = (45.0 * 16.0 * 50.0) / (kDrivingMotorPinionTeeth * 15.0 * 28.0); // L3, see https://www.swervedrivespecialties.com/products/mk4-swerve-module
-    public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters) / kDrivingMotorReduction;
+    public static final AngularVelocity kDriveWheelFreeSpeed = RPM.of((NeoMotorContants.kNeoFreeSpeed.times(kWheelCircumference).magnitude()) / kDrivingMotorReduction);
 
-    public static final double kDriveFactor = ModuleConstants.kWheelDiameterMeters * Math.PI / ModuleConstants.kDrivingMotorReduction;
+    public static final double kDriveFactor = ModuleConstants.kWheelDiameter.abs(Meters) * Math.PI / ModuleConstants.kDrivingMotorReduction;
     public static final double kTurnFactor  = 2 * Math.PI;
 
     public static final double kDriveMOI = 0.025;
@@ -313,10 +325,10 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3; // 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;  // 3;
-    public static final double kMaxAngularAccelerationRadiansPerSecond = Math.PI;
-    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+    public static final LinearVelocity kMaxSpeed = MetersPerSecond.of(3); // 3;
+    public static final LinearAcceleration kMaxAcceleration = MetersPerSecondPerSecond.of(3);
+    public static final AngularAcceleration kMaxAngularAcceleration = RadiansPerSecondPerSecond.of(Math.PI);
+    public static final AngularVelocity kMaxAngularSpeed = RadiansPerSecond.of(Math.PI);
 
     public static final double kPXController = 1;
     public static final double kPYController = 1;
@@ -325,12 +337,12 @@ public final class Constants {
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(
-            kMaxAngularAccelerationRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+            kMaxAngularAcceleration.abs(RadiansPerSecondPerSecond), kMaxAngularSpeed.abs(RadiansPerSecond));
   }
 
   public static final class NeoMotorContants {
-    public static final double kNeoFreeSpeedRpm = 5676;
-    public static final double kVortexFreeSpeedRpm = 6784;
+    public static final AngularVelocity kNeoFreeSpeed = RPM.of(5676);
+    public static final AngularVelocity kVortexFreeSpeedRpm = RPM.of(6784);
   }
 
   public static final class PhotonVisionConstants {
@@ -381,4 +393,19 @@ public final class Constants {
   public static final class LedConfigs {
     public static final LedStripConfig strip1 = new LedStripConfig(0, 30, 60);
   }
+
+  // public static interface BallPhysicsSimConstants {
+  //   Angle kLaunchAngle = Degrees.of(73);
+  //   Distance kWheelRadius = Inches.of(2);
+  //   Distance kLaunchHeight = Inches.of(16);
+  //   double kRollCoefficient = 0.5;
+  //   double kDragCoefficient = 0.5;
+  //   double kLiftCoefficient = 0;
+  //   int    kMaxIterations   = 500;
+
+  //   Distance kBallRadius = Inches.of(6);
+  //   LinearVelocity kGravity = MetersPerSecond.of(9.81);
+  //   // Massnet kBallMass = 
+    
+  // }
 }

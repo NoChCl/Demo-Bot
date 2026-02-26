@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.RPM;
+
 import java.util.ArrayList;
 
 import com.pathplanner.lib.auto.NamedCommands;
@@ -256,7 +258,7 @@ public class RobotContainer {
     }
 
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter)) {
-      m_driverJoystick.button(7).whileTrue(new ShooterCommands.Run.Indefinitely(m_shooter, () -> ShooterConstants.targetSpeed));
+      m_driverJoystick.button(7).whileTrue(new ShooterCommands.Run.Indefinitely(m_shooter, () -> ShooterConstants.kTargetSpeed.abs(RPM)));
     }
 
     if (enableCopilotController) {

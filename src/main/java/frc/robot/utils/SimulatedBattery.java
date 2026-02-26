@@ -1,20 +1,23 @@
 package frc.robot.utils;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import java.util.ArrayList;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SimulatedBattery extends SubsystemBase {
-  private double m_Voltage = RobotController.getBatteryVoltage();
+  private Voltage m_Voltage = Volts.of(RobotController.getBatteryVoltage());
 
   private ArrayList<DoubleSupplier> m_Suppliers = new ArrayList<DoubleSupplier>();
 
-  public double getVoltage() {
+  public Voltage getVoltage() {
     return m_Voltage;
   }
 
@@ -31,7 +34,7 @@ public class SimulatedBattery extends SubsystemBase {
       }
       return current;
     });
-    m_Voltage = BatterySim.calculateDefaultBatteryLoadedVoltage(currents.get());
-    RoboRioSim.setVInVoltage(m_Voltage);
+    m_Voltage = Volts.of(BatterySim.calculateDefaultBatteryLoadedVoltage(currents.get()));
+    RoboRioSim.setVInVoltage(m_Voltage.in(Volts));
   }
 }

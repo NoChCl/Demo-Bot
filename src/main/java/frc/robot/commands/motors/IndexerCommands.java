@@ -1,5 +1,8 @@
 package frc.robot.commands.motors;
 
+import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.Seconds;
+
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -60,7 +63,7 @@ public interface IndexerCommands {
      */
     public static class Step extends IndexerCommands.Position.Await.Actively {
       public Step(Indexer indexer) {
-        super(indexer, () -> indexer.getPosition() + IndexerConstants.Control.indexerStdStepSize);
+        super(indexer, () -> indexer.getPosition() + IndexerConstants.Control.kStepSize.abs(Radians));
         setUseStaticTarget(true);
       }
     }
@@ -73,7 +76,7 @@ public interface IndexerCommands {
       public StepAndPause(Indexer indexer) {
         addCommands(
           new IndexerCommands.Abstracts.Step(indexer),
-          Commands.waitSeconds(IndexerConstants.Control.stepWaitTime)
+          Commands.waitSeconds(IndexerConstants.Control.kStepWaitTime.abs(Seconds))
         );
       }
     }

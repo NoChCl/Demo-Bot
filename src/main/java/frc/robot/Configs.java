@@ -1,4 +1,6 @@
 package frc.robot;
+import static edu.wpi.first.units.Units.RPM;
+
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -16,7 +18,7 @@ public final class Configs {
 
     static {
       double nominalVoltage = 12;
-      double drivingVelocityFeedForward = nominalVoltage / ModuleConstants.kDriveWheelFreeSpeedRps;
+      double drivingVelocityFeedForward = nominalVoltage / ModuleConstants.kDriveWheelFreeSpeed.in(RPM);
 
       drivingConfig
         .idleMode(IdleMode.kBrake)
@@ -30,7 +32,7 @@ public final class Configs {
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         .pid(0.01, 0.0, 0)
         .outputRange(-1, 1)
-        .feedForward.kV(drivingVelocityFeedForward * 0.1025);
+        .feedForward.kV(drivingVelocityFeedForward/* * 0.1025*/);
 
       turningConfig
         .idleMode(IdleMode.kBrake)
@@ -59,7 +61,7 @@ public final class Configs {
 
     static {
       double nominalVoltage = 12;
-      double feedForward = nominalVoltage / NeoMotorContants.kNeoFreeSpeedRpm;
+      double feedForward = nominalVoltage / NeoMotorContants.kNeoFreeSpeed.in(RPM);
 
       config
         .idleMode(IdleMode.kCoast)
@@ -83,7 +85,7 @@ public final class Configs {
 
     static {
       double nominalVoltage = 12;
-      double feedForward = nominalVoltage / NeoMotorContants.kNeoFreeSpeedRpm;
+      double feedForward = nominalVoltage / NeoMotorContants.kNeoFreeSpeed.in(RPM);
 
       config
         .idleMode(IdleMode.kBrake)
@@ -107,7 +109,7 @@ public final class Configs {
 
     static {
       double nominalVoltage = 12;
-      double feedForward = nominalVoltage / NeoMotorContants.kNeoFreeSpeedRpm;
+      double feedForward = nominalVoltage / NeoMotorContants.kNeoFreeSpeed.in(RPM);
 
       config
         .idleMode(IdleMode.kBrake)
@@ -131,7 +133,7 @@ public final class Configs {
 
     static {
       double nominalVoltage = 12;
-      double feedForward = nominalVoltage / (IntakeConstants.kMotorFreeSpeed);
+      double feedForward = nominalVoltage / (IntakeConstants.kMotorFreeSpeed.in(RPM));
 
       config
         .idleMode(IdleMode.kCoast)
@@ -156,7 +158,7 @@ public final class Configs {
 
     static {
       double nominalVoltage = 12;
-      double feedForward = nominalVoltage / NeoMotorContants.kNeoFreeSpeedRpm;
+      double feedForward = nominalVoltage / NeoMotorContants.kNeoFreeSpeed.in(RPM);
 
       config
         .idleMode(IdleMode.kBrake)
@@ -180,7 +182,7 @@ public final class Configs {
 
     static {
       double nominalVoltage = 12;
-      double feedForward = nominalVoltage / ShooterConstants.kFreeSpeedRpm;
+      double feedForward = nominalVoltage / ShooterConstants.kFreeSpeed.in(RPM);
 
       config
         .idleMode(IdleMode.kCoast)

@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 
+import static edu.wpi.first.units.Units.Seconds;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -297,7 +299,7 @@ public class DriveSubsystem extends SubsystemBase {
       .toSwerveModuleStates(
         ChassisSpeeds.discretize(
           speeds,
-          DriveConstants.kDrivePeriod
+          DriveConstants.kDrivePeriod.in(Seconds)
         )
       );
     setModuleStates(swerveModuleStates);
@@ -321,7 +323,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
+        desiredStates, DriveConstants.kMaxSpeed);
     m_frontLeft.setDesiredState(desiredStates[2]);
     m_frontRight.setDesiredState(desiredStates[3]);
     m_rearLeft.setDesiredState(desiredStates[0]);

@@ -1,5 +1,7 @@
 package frc.robot.commands.motors;
 
+import static edu.wpi.first.units.Units.Rotations;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.commands.generics.GenericMotorControl;
@@ -10,7 +12,7 @@ public interface ClimberCommands {
     interface Extend {
       public class Actively extends GenericMotorControl.Position.Await.Actively {
         public Actively(Climber climber) {
-          super(climber, ClimberConstants.Control.ExtendedPosition);
+          super(climber, ClimberConstants.Control.kExtendedPosition.in(Rotations));
         }
       }
 
@@ -20,7 +22,7 @@ public interface ClimberCommands {
 
       public class Passively extends GenericMotorControl.Position.Await.Passively {
         public Passively(Climber climber) {
-          super(climber, ClimberConstants.Control.ExtendedPosition);
+          super(climber, ClimberConstants.Control.kExtendedPosition.in(Rotations));
         }
       }
 
@@ -32,7 +34,7 @@ public interface ClimberCommands {
     interface Retract {
       public class Actively extends GenericMotorControl.Position.Await.Actively {
         public Actively(Climber climber) {
-          super(climber, ClimberConstants.Control.RetractedPosition);
+          super(climber, ClimberConstants.Control.kRetractedPosition.in(Rotations));
         }
       }
 
@@ -42,7 +44,7 @@ public interface ClimberCommands {
 
       public class Passively extends GenericMotorControl.Position.Await.Passively {
         public Passively(Climber climber) {
-          super(climber, ClimberConstants.Control.RetractedPosition);
+          super(climber, ClimberConstants.Control.kRetractedPosition.in(Rotations));
         }
       }
 

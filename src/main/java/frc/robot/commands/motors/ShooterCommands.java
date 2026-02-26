@@ -1,5 +1,7 @@
 package frc.robot.commands.motors;
 
+import static edu.wpi.first.units.Units.RPM;
+
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,7 +38,7 @@ public interface ShooterCommands {
       }
 
       public Sequence(Shooter shooter, Command... commands) {
-        this(shooter, ShooterConstants.targetSpeed, commands);
+        this(shooter, ShooterConstants.kTargetSpeed.abs(RPM), commands);
       }
     }
 
@@ -68,7 +70,7 @@ public interface ShooterCommands {
       }
 
       public Parallel(Shooter shooter, Command... commands) {
-        this(shooter, ShooterConstants.targetSpeed, commands);
+        this(shooter, ShooterConstants.kTargetSpeed.abs(RPM), commands);
       }
     }
 
@@ -111,7 +113,7 @@ public interface ShooterCommands {
         }
 
         public Actively(Shooter shooter) {
-          this(shooter, ShooterConstants.targetSpeed);
+          this(shooter, ShooterConstants.kTargetSpeed.abs(RPM));
         }
       }
 
@@ -169,7 +171,7 @@ public interface ShooterCommands {
          * @param shooter - The shooter object
          */
         public Passively(Shooter shooter) {
-          this(shooter, ShooterConstants.targetSpeed);
+          this(shooter, ShooterConstants.kTargetSpeed.abs(RPM));
         }
       }
 
@@ -227,7 +229,7 @@ public interface ShooterCommands {
        * @param shooter - The shooter object
        */
       public Indefinitely(Shooter shooter) {
-        this(shooter, ShooterConstants.targetSpeed);
+        this(shooter, ShooterConstants.kTargetSpeed.abs(RPM));
       }
     }
 
@@ -254,7 +256,7 @@ public interface ShooterCommands {
      * @param shooter - The shooter object
      */
     static Command Indefinitely(Shooter shooter) {
-      return new Indefinitely(shooter, ShooterConstants.targetSpeed);
+      return new Indefinitely(shooter, ShooterConstants.kTargetSpeed.abs(RPM));
     }
   }
 }

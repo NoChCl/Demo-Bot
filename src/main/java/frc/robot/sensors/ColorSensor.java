@@ -12,7 +12,7 @@ public class ColorSensor {
 
   public ColorSensor(int sensorId) {
     m_sensor = new CanColorPromixitySensor(sensorId);
-    m_tracker = new IntSensorTracker(m_sensor::getProximity, ColorSensorConstants.historyBufferSize);
+    m_tracker = new IntSensorTracker(m_sensor::getProximity, ColorSensorConstants.kHistoryBufferSize);
   }
 
   //@Override

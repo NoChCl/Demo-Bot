@@ -1,5 +1,8 @@
 package frc.robot.commands.motors;
 
+import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Radians;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.generics.GenericMotorControl;
@@ -21,7 +24,7 @@ public interface IntakeCommands {
       public interface Await {
         public static class Actively extends GenericMotorControl.Velocity.Await.Actively {
           public Actively(Intake intake) {
-            super(intake, IntakeConstants.Control.IntakeSpeed);
+            super(intake, IntakeConstants.Control.kIntakeSpeed.in(RPM));
           }
         }
 
@@ -31,7 +34,7 @@ public interface IntakeCommands {
       
         public static class Passively extends GenericMotorControl.Velocity.Await.Passively {
           public Passively(Intake intake) {
-            super(intake, IntakeConstants.Control.IntakeSpeed);
+            super(intake, IntakeConstants.Control.kIntakeSpeed.in(RPM));
           }
         }
 
@@ -46,7 +49,7 @@ public interface IntakeCommands {
         }
 
         public Indefinitely(Intake intake) {
-          this(intake, IntakeConstants.Control.IntakeSpeed);
+          this(intake, IntakeConstants.Control.kIntakeSpeed.in(RPM));
         }
       }
 
@@ -66,7 +69,7 @@ public interface IntakeCommands {
         
         public static class Actively extends GenericMotorControl.Position.Await.Actively {
           public Actively(IntakeDeployment intakeDeployment) {
-            super(intakeDeployment, IntakeConstants.Control.DeployedPosition);
+            super(intakeDeployment, IntakeConstants.Control.kDeployedPosition.abs(Radians));
           }
         }
 
@@ -76,7 +79,7 @@ public interface IntakeCommands {
     
         public static class Passively extends GenericMotorControl.Position.Await.Passively {
           public Passively(IntakeDeployment intakeDeployment) {
-            super(intakeDeployment, IntakeConstants.Control.DeployedPosition);
+            super(intakeDeployment, IntakeConstants.Control.kDeployedPosition.abs(Radians));
           }
         }
 
@@ -88,7 +91,7 @@ public interface IntakeCommands {
       public static interface Retract {
         public static class Actively extends GenericMotorControl.Position.Await.Actively {
           public Actively(IntakeDeployment intakeDeployment) {
-            super(intakeDeployment, IntakeConstants.Control.RetractedPosition);
+            super(intakeDeployment, IntakeConstants.Control.kRetractedPosition.abs(Radians));
           }
         }
 
@@ -98,7 +101,7 @@ public interface IntakeCommands {
     
         public static class Passively extends GenericMotorControl.Position.Await.Passively {
           public Passively(IntakeDeployment intakeDeployment) {
-            super(intakeDeployment, IntakeConstants.Control.RetractedPosition);
+            super(intakeDeployment, IntakeConstants.Control.kRetractedPosition.abs(Radians));
           }
         }
 

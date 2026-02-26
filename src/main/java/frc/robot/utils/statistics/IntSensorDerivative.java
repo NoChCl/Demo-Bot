@@ -22,7 +22,7 @@ public class IntSensorDerivative extends IntSensorHistory {
   }
 
   public IntSensorDerivative(Supplier<double[]> sensorSupplier) {
-    this(sensorSupplier, (short) TrackerConstants.calculateEndShift(TrackerConstants.derivativeWindow));
+    this(sensorSupplier, (short) TrackerConstants.calculateEndShift(TrackerConstants.kDerivativeWindow));
   }
 
   public IntSensorDerivative(IntSensorHistory parent) {

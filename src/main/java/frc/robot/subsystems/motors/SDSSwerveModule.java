@@ -4,6 +4,11 @@
 
 package frc.robot.subsystems.motors;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
+
 import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
@@ -18,6 +23,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Configs;
 import frc.robot.Robot;
@@ -26,7 +32,7 @@ import frc.robot.Constants.DriveConstants;
 
 /** This class represents a single swerve module with a drive and turning motor. */
 public class SDSSwerveModule {
-  public static record SDSSwerveModuleConfig(int driveCanId, int pivotCanId, double zeroOffset, boolean invertDrive) {}
+  public static record SDSSwerveModuleConfig(int driveCanId, int pivotCanId, Angle zeroOffset, boolean invertDrive) {}
   
   private final SparkBase m_driveMotor;
   private final SparkBase m_turnMotor;
@@ -99,7 +105,7 @@ public class SDSSwerveModule {
   }
 
   public SDSSwerveModule(SDSSwerveModuleConfig config) {
-    this(config.driveCanId, config.pivotCanId, config.zeroOffset, config.invertDrive);
+    this(config.driveCanId, config.pivotCanId, config.zeroOffset.in(Rotations), config.invertDrive);
   }
 
   /**
@@ -165,7 +171,7 @@ public class SDSSwerveModule {
     SmartDashboard.putNumber("Turning Motor " + m_turnMotor.getDeviceId() + " Theta", getTurnMotorRotation2d().getDegrees());
 
     if (Robot.isSimulation()) {
-      m_driveMotorSim.iterate(desiredState.speedMetersPerSecond, RobotContainer.GLOBAL_SIMULATED_BATTERY.getVoltage(), DriveConstants.kDrivePeriod);
+      m_driveMotorSim.iterate(desiredState.speedMetersPerSecond, RobotContainer.GLOBAL_SIMULATED_BATTERY.getVoltage().in(Volts), DriveConstants.kDrivePeriod.in(Seconds));
       m_turnMotorSim.setPosition(desiredState.angle.getRadians());
       return;
     }
@@ -174,9 +180,9 @@ public class SDSSwerveModule {
       Math.max(
         Math.min(
           correctedDesiredState.speedMetersPerSecond,
-          DriveConstants.kMaxSpeedMetersPerSecond
+          DriveConstants.kMaxSpeed.in(MetersPerSecond)
         ),
-        -DriveConstants.kMaxSpeedMetersPerSecond
+        -DriveConstants.kMaxSpeed.in(MetersPerSecond)
       ), ControlType.kVelocity);
     m_turnClosedLoopController.setSetpoint(correctedDesiredState.angle.getRadians(), ControlType.kPosition);
 

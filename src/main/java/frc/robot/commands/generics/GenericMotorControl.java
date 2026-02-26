@@ -1,5 +1,8 @@
 package frc.robot.commands.generics;
 
+import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Radians;
+
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,7 +37,7 @@ public interface GenericMotorControl {
       public class Passively extends GenericAwaitBaseTargetWithinError {
         protected final GenericSparkMaxMotor m_motor;
         public Passively(GenericSparkMaxMotor motor, DoubleSupplier targetSupplier) {
-          super(motor::getVelocity, targetSupplier, GenericConstants.MotorPositionControlAllowableError);
+          super(motor::getVelocity, targetSupplier, GenericConstants.kMotorPositionControlAllowableError.in(Radians));
           m_motor = motor;
         }
   
@@ -110,7 +113,7 @@ public interface GenericMotorControl {
       public class Passively extends GenericAwaitBaseTargetWithinError {
         protected final GenericSparkMaxMotor m_motor;
         public Passively(GenericSparkMaxMotor motor, DoubleSupplier targetSupplier) {
-          super(motor::getVelocity, targetSupplier, GenericConstants.MotorVelocityControlAllowableError);
+          super(motor::getVelocity, targetSupplier, GenericConstants.kMotorVelocityControlAllowableError.in(RPM));
           m_motor = motor;
           addRequirements(new Subsystem[0]);
         }

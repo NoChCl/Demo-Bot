@@ -65,7 +65,7 @@ public interface FaceHeading {
           DoubleSupplier xSupplier,
           DoubleSupplier ySupplier
       ) {
-        super(() -> Targeting.getAngularOffset(drivetrain.getPose().getRotation(), target.get()), 0, GyroConstants.TargetAngleAllowableError.abs(Radians));
+        super(() -> Targeting.getAngularOffset(drivetrain.getPose().getRotation(), target.get()), 0, GyroConstants.kTargetAngleAllowableError.abs(Radians));
         this.m_drivetrain = drivetrain;
         this.m_headingTargetSupplier = target;
         this.m_xSupplier = xSupplier;

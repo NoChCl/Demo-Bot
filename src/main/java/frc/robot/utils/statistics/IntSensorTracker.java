@@ -1,5 +1,7 @@
 package frc.robot.utils.statistics;
 
+import static edu.wpi.first.units.Units.Seconds;
+
 import java.util.function.IntSupplier;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -133,7 +135,7 @@ public class IntSensorTracker {
    * @return If another hit is allowed
    */
   private boolean shouldPass() {
-    return lastHit < Timer.getFPGATimestamp() - TrackerConstants.debounceTimeSeconds && isAllowed();
+    return lastHit < Timer.getFPGATimestamp() - TrackerConstants.kDebounceTimeSeconds.abs(Seconds) && isAllowed();
   }
 
   /**
@@ -141,7 +143,7 @@ public class IntSensorTracker {
    * @return If turbulance has likely settled.
    */
   private boolean isAllowed() {
-    return TrackerConstants.settleTimeSeconds < Timer.getFPGATimestamp();
+    return TrackerConstants.kSettleTime.abs(Seconds) < Timer.getFPGATimestamp();
   }
 
   /**
