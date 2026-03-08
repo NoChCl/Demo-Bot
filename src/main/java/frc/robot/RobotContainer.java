@@ -145,13 +145,13 @@ public class RobotContainer {
    */
   private void registerPathplannerCommands() {
     NamedCommands.registerCommand("EnableShooter", autonShooter.enable());
-    NamedCommands.registerCommand("DisabledShooter", autonFeeder.disable());
+    NamedCommands.registerCommand("DisableShooter", autonShooter.disable());
 
     NamedCommands.registerCommand("EnableFeeder", autonFeeder.enable());
     NamedCommands.registerCommand("DisableFeeder", autonFeeder.disable());
 
     NamedCommands.registerCommand("EnableIntake", autonIntake.enable());
-    NamedCommands.registerCommand("DisabledIntake", autonIntake.disable());
+    NamedCommands.registerCommand("DisableIntake", autonIntake.disable());
 
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter)) {
       autonShooter.getTrigger().whileTrue(ShooterCommands.Run.Indefinitely(m_shooter));

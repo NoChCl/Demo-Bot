@@ -43,6 +43,8 @@ public class AutoBuilder2 {
           drivetrain // Reference to drivetrain to set requirements
           );
 
+        DriverStation.reportWarning("AutoBuikder is configured. About to build Auto Chooser",false);
+
         autoChooser = AutoBuilder.buildAutoChooser(); // Named commands must be registered before this is called. Alternatively, those two lines could be moved into RobotContainer after all commands are registered.
         SmartDashboard.putData("Auto Chooser", autoChooser);
       }
