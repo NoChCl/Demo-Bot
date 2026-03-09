@@ -65,10 +65,10 @@ public class RobotContainer {
   private final Feature[] enabledFeatures = new Feature[] {
     Feature.Shooter,
     Feature.Indexer,
-    //Feature.Feeder,
-    // Feature.Climber,
+    Feature.Feeder,
+    //Feature.Climber,
     Feature.Intake,
-    // Feature.IntakeDeployment
+    Feature.IntakeDeployment
   };
 
   private final SwerveDrivetrain m_robotDrive = new SwerveDrivetrain();
@@ -81,13 +81,15 @@ public class RobotContainer {
 
   private final ColorSensor m_indexerSensor = new ColorSensor(0);
 
-  private final Shooter m_shooter = Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter) ?  new Shooter() : null;
-  private final Indexer m_indexer = Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer) ? new Indexer() : null;
-  private final Feeder  m_Feeder  = Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder) ? new Feeder() : null;
-  private final Climber m_Climber = Constants.isFeatureEnabled(enabledFeatures, Feature.Climber) ? new Climber() : null;
-  private final Intake  m_Intake  = Constants.isFeatureEnabled(enabledFeatures, Feature.Intake) ? new Intake() : null;
-
+  private final Shooter m_shooter = Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter)  ? new Shooter() : null;
+  private final Indexer m_indexer = Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer)  ? new Indexer() : null;
+  
+  private final Feeder  m_Feeder  = Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)   ? new Feeder()  : null;
+  private final Intake  m_Intake  = Constants.isFeatureEnabled(enabledFeatures, Feature.Intake)   ? new Intake()  : null;
   private final IntakeDeployment m_IntakeDeployment = Constants.isFeatureEnabled(enabledFeatures, Feature.IntakeDeployment) ? new IntakeDeployment() : null;
+
+  private final Climber m_Climber = Constants.isFeatureEnabled(enabledFeatures, Feature.Climber)  ? new Climber() : null;
+
 
   public static final SimulatedBattery GLOBAL_SIMULATED_BATTERY = new SimulatedBattery();
   // private final Intake m_intake = new Intake();
