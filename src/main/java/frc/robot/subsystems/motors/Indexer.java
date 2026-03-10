@@ -6,6 +6,6 @@ import frc.robot.subsystems.generics.GenericNeo;
 
 public class Indexer extends GenericNeo {
   public Indexer() {
-    super(IndexerConstants.kMotorCanId, IndexerMotor.config);
+    super(IndexerConstants.UpperIndexerCanID, IndexerMotor.config);
   }
 }
