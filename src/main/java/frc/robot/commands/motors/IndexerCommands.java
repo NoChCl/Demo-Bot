@@ -11,47 +11,47 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.IndexerConstants;
 import frc.robot.commands.bases.DoXNTimes;
 import frc.robot.commands.generics.GenericMotorControl;
-import frc.robot.subsystems.motors.Indexer;
+import frc.robot.subsystems.motors.UpperIndexer;
 
 public interface IndexerCommands {
   static class Stop extends GenericMotorControl.Stop {
-    public Stop(Indexer indexer) {
+    public Stop(UpperIndexer indexer) {
       super(indexer);
     }
   }
-  static Command Stop(Indexer indexer) {
+  static Command Stop(UpperIndexer indexer) {
     return new Stop(indexer);
   }
   
   interface Position {
     interface Await {
       class Actively extends GenericMotorControl.Position.Await.Actively {
-        public Actively(Indexer indexer, DoubleSupplier targetSupplier) {
+        public Actively(UpperIndexer indexer, DoubleSupplier targetSupplier) {
           super(indexer, targetSupplier);
         }
         
-        public Actively(Indexer indexer, double targetPosition) {
+        public Actively(UpperIndexer indexer, double targetPosition) {
           super(indexer, () -> targetPosition);
         }
       }
 
       class Passively extends GenericMotorControl.Position.Await.Passively {
-        public Passively(Indexer indexer, DoubleSupplier targetSupplier) {
+        public Passively(UpperIndexer indexer, DoubleSupplier targetSupplier) {
           super(indexer, targetSupplier);
         }
         
-        public Passively(Indexer indexer, double targetPosition) {
+        public Passively(UpperIndexer indexer, double targetPosition) {
           super(indexer, () -> targetPosition);
         }
       }
     }
 
     class Set extends GenericMotorControl.Position.Set {
-      public Set(Indexer indexer, DoubleSupplier targetSupplier) {
+      public Set(UpperIndexer indexer, DoubleSupplier targetSupplier) {
         super(indexer, targetSupplier);
       }
       
-      public Set(Indexer indexer, double targetPosition) {
+      public Set(UpperIndexer indexer, double targetPosition) {
         super(indexer, () -> targetPosition);
       }
     }
@@ -62,18 +62,18 @@ public interface IndexerCommands {
      * Steps the indexer by the indexer step size constant.
      */
     public static class Step extends IndexerCommands.Position.Await.Actively {
-      public Step(Indexer indexer) {
+      public Step(UpperIndexer indexer) {
         super(indexer, () -> indexer.getPosition() + IndexerConstants.Control.kStepSize.abs(Radians));
         setUseStaticTarget(true);
       }
     }
 
-    static Command Step(Indexer indexer) {
+    static Command Step(UpperIndexer indexer) {
       return new Step(indexer);
     }
 
     public static class StepAndPause extends SequentialCommandGroup {
-      public StepAndPause(Indexer indexer) {
+      public StepAndPause(UpperIndexer indexer) {
         addCommands(
           new IndexerCommands.Abstracts.Step(indexer),
           Commands.waitSeconds(IndexerConstants.Control.kStepWaitTime.abs(Seconds))
@@ -81,12 +81,12 @@ public interface IndexerCommands {
       }
     }
 
-    static Command StepAndPause(Indexer indexer) {
+    static Command StepAndPause(UpperIndexer indexer) {
       return new StepAndPause(indexer);
     }
 
     public class StepNTimes extends DoXNTimes {
-      public StepNTimes(Indexer indexer, int n) {
+      public StepNTimes(UpperIndexer indexer, int n) {
         super(
           n,
           new IndexerCommands.Abstracts.StepAndPause(indexer)
@@ -95,7 +95,7 @@ public interface IndexerCommands {
       
     }
 
-    static Command StepNTimes(Indexer indexer, int n) {
+    static Command StepNTimes(UpperIndexer indexer, int n) {
       return new StepNTimes(indexer, n);
     }
   }

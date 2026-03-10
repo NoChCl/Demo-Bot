@@ -32,13 +32,13 @@ import frc.robot.sensors.PhotonVision;
 import frc.robot.subsystems.AutoBuilder2;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.LedStrip;
+import frc.robot.subsystems.motors.BeltFeeder;
 import frc.robot.subsystems.motors.Climber;
-import frc.robot.subsystems.motors.UpperIndexer;
-import frc.robot.subsystems.motors.Indexer;
 import frc.robot.subsystems.motors.Intake;
 import frc.robot.subsystems.motors.IntakeDeployment;
 import frc.robot.subsystems.motors.LonelyTalonFx;
 import frc.robot.subsystems.motors.Shooter;
+import frc.robot.subsystems.motors.UpperIndexer;
 import frc.robot.utils.SimulatedBattery;
 import frc.robot.sensors.ColorSensor;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -82,9 +82,9 @@ public class RobotContainer {
   private final ColorSensor m_indexerSensor = new ColorSensor(0);
 
   private final Shooter m_shooter = Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter)  ? new Shooter() : null;
-  private final Indexer m_indexer = Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer)  ? new Indexer() : null;
+  private final UpperIndexer m_indexer = Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer)  ? new UpperIndexer() : null;
   
-  private final UpperIndexer  m_Feeder  = Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)   ? new UpperIndexer()  : null;
+  private final BeltFeeder m_Feeder  = Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)   ? new BeltFeeder()  : null;
   private final Intake  m_Intake  = Constants.isFeatureEnabled(enabledFeatures, Feature.Intake)   ? new Intake()  : null;
   private final IntakeDeployment m_IntakeDeployment = Constants.isFeatureEnabled(enabledFeatures, Feature.IntakeDeployment) ? new IntakeDeployment() : null;
 
