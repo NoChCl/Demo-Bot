@@ -70,6 +70,8 @@ public class GenericSparkMaxMotor extends SubsystemBase {
     m_motor.set(0.0);
   }
 
+  public SparkMax getController() { return m_motor;} 
+
   protected void sendStatsToDash(String name) {
     SmartDashboard.putNumber(name + " Velocity", getVelocity());
     SmartDashboard.putNumber(name + " Position", getPosition());

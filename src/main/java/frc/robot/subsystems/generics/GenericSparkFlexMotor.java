@@ -7,6 +7,7 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.SparkFlex;
 
@@ -69,6 +70,9 @@ public class GenericSparkFlexMotor extends SubsystemBase {
   public void stop() {
     m_motor.set(0.0);
   }
+   
+  public SparkFlex getController() { return m_motor;} 
+
 
   protected void sendStatsToDash(String name) {
     SmartDashboard.putNumber(name + " Velocity", getVelocity());

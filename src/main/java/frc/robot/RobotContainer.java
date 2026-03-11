@@ -35,6 +35,7 @@ import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.LedStrip;
 import frc.robot.subsystems.motors.BeltFeeder;
 import frc.robot.subsystems.motors.Climber;
+import frc.robot.subsystems.motors.IDeployFollow;
 import frc.robot.subsystems.motors.Intake;
 import frc.robot.subsystems.motors.IntakeDeployment;
 import frc.robot.subsystems.motors.LonelyTalonFx;
@@ -92,7 +93,8 @@ public class RobotContainer {
   private final BeltFeeder m_Feeder  = Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)   ? new BeltFeeder()  : null;
   private final Intake  m_Intake  = Constants.isFeatureEnabled(enabledFeatures, Feature.Intake)   ? new Intake()  : null;
   private final IntakeDeployment m_IntakeDeployment = Constants.isFeatureEnabled(enabledFeatures, Feature.IntakeDeployment) ? new IntakeDeployment() : null;
-
+  private final IDeployFollow m_IDeplyFolower = Constants.isFeatureEnabled(enabledFeatures, Feature.IntakeDeployment) ? new IDeployFollow() : null;
+  
   private final Climber m_Climber = Constants.isFeatureEnabled(enabledFeatures, Feature.Climber)  ? new Climber() : null;
 
 
@@ -141,6 +143,9 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter)) m_shooter.setDefaultCommand(ShooterCommands.Stop(m_shooter));
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer)) m_UpperIndexer.setDefaultCommand(UpperIndexerCommands.Stop(m_UpperIndexer)); m_LowerIndexer.setDefaultCommand(LowerIndexerCommands.Stop(m_LowerIndexer));
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)) m_Feeder.setDefaultCommand(FeederCommands.Stop(m_Feeder));
+    if (m_IntakeDeployment != null && m_IDeplyFolower != null) {
+        //m_IDeplyFolower.getController().follow(m_IntakeDeployment.getController());TODO Make follow main on start
+    }
   }
 
   private ToggleCommand autonShooter = new ToggleCommand();
