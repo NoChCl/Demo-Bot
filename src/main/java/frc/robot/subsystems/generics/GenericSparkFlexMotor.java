@@ -70,9 +70,6 @@ public class GenericSparkFlexMotor extends SubsystemBase {
   public void stop() {
     m_motor.set(0.0);
   }
-   
-  public SparkFlex getController() { return m_motor;} 
-
 
   protected void sendStatsToDash(String name) {
     SmartDashboard.putNumber(name + " Velocity", getVelocity());

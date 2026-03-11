@@ -143,9 +143,7 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter)) m_shooter.setDefaultCommand(ShooterCommands.Stop(m_shooter));
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer)) m_UpperIndexer.setDefaultCommand(UpperIndexerCommands.Stop(m_UpperIndexer)); m_LowerIndexer.setDefaultCommand(LowerIndexerCommands.Stop(m_LowerIndexer));
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)) m_Feeder.setDefaultCommand(FeederCommands.Stop(m_Feeder));
-    if (m_IntakeDeployment != null && m_IDeplyFolower != null) {
-        //m_IDeplyFolower.getController().follow(m_IntakeDeployment.getController());TODO Make follow main on start
-    }
+ 
   }
 
   private ToggleCommand autonShooter = new ToggleCommand();

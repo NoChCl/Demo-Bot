@@ -248,6 +248,8 @@ public static final class LowerIndexerConfig {
         .pid(0.12, 0.0, 0, ClosedLoopSlot.kSlot1) // Velocity
         .outputRange(-1, 1)
         .feedForward.kV(feedForward, ClosedLoopSlot.kSlot1);
+      
+      config.follow(IntakeConstants.kDeploymentMotorCanId, true);
     }
   }
 
