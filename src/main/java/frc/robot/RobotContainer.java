@@ -68,6 +68,7 @@ public class RobotContainer {
    */
   private final Feature[] enabledFeatures = new Feature[] {
     Feature.Shooter,
+    Feature.Targeter,
     Feature.Indexer,
     Feature.Feeder,
     //Feature.Climber,
@@ -110,6 +111,9 @@ public class RobotContainer {
   CommandJoystick m_Joystick = new CommandJoystick(OIConstants.kSimulationJoystickPort);
 
   public ArrayList<String> runningCommands = new ArrayList<String>();
+
+  boolean isTargeting = false;
+  boolean targetIsHub = true;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -270,6 +274,10 @@ public class RobotContainer {
 
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter)) {
       m_driverJoystick.button(7).whileTrue(new ShooterCommands.Run.Indefinitely(m_shooter, () -> ShooterConstants.kTargetSpeed.abs(RPM)));
+    }
+
+    if (Constants.isFeatureEnabled(enabledFeatures, Feature.Targeter)) {
+      //m_driverJoystick.button(7).whileTrue(new ShooterCommands.Run.Indefinitely(m_shooter, () -> ShooterConstants.kTargetSpeed.abs(RPM)));
     }
 
     if (enableCopilotController) {

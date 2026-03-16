@@ -55,6 +55,7 @@ import frc.robot.subsystems.motors.SDSSwerveModule.SDSSwerveModuleConfig;
 public final class Constants {
   public static enum Feature {
     Shooter,
+    Targeter,
     Indexer,
     Feeder,
     Climber,
