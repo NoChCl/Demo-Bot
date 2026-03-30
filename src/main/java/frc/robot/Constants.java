@@ -78,7 +78,7 @@ public final class Constants {
     return true;
   }
 
-  public static final boolean UseTestBot = true;
+  public static final boolean UseTestBot = false;
 
   public static final class GenericConstants {
     public static final Angle kMotorPositionControlAllowableError = Radians.of(Math.PI / 2);
@@ -226,7 +226,7 @@ public final class Constants {
   }
 
   public static final class FeederConstants {
-    public static final int BeltFeederCanID = 15;
+    public static final int BeltFeederCanID = 30;
 
 
     public static final class Control {
@@ -244,7 +244,7 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-    public static final int kMotorCanId = 10;
+    public static final int kMotorCanId = 31;
     public static final int kDeploymentMotorCanId = 16;
     public static final int kDeployFollowMotorCanId = 17;
     public static final AngularVelocity kMotorFreeSpeed = RPM.of(4600);
