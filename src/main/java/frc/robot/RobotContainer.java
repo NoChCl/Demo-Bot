@@ -21,7 +21,6 @@ import frc.robot.commands.ledstrip.LedStripScrollRainbow;
 import frc.robot.commands.ledstrip.LedStripScrollYellow;
 import frc.robot.commands.ledstrip.LedStripSetAlianceColor;
 import frc.robot.commands.ledstrip.LedStripSetGreen;
-import frc.robot.commands.motors.ClimberCommands;
 import frc.robot.commands.motors.FeederCommands;
 import frc.robot.commands.motors.Indexer.UpperIndexerCommands;
 import frc.robot.commands.motors.Indexer.LowerIndexerCommands;
@@ -35,9 +34,7 @@ import frc.robot.subsystems.AutoBuilder2;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.LedStrip;
 import frc.robot.subsystems.motors.BeltFeeder;
-import frc.robot.subsystems.motors.Climber;
 import frc.robot.subsystems.motors.Intake;
-import frc.robot.subsystems.motors.IntakeDeployment;
 import frc.robot.subsystems.motors.LonelyTalonFx;
 import frc.robot.subsystems.motors.Shooter;
 import frc.robot.subsystems.motors.UpperIndexer;
@@ -92,10 +89,7 @@ public class RobotContainer {
   
   private final BeltFeeder m_Feeder  = Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)   ? new BeltFeeder()  : null;
   private final Intake  m_Intake  = Constants.isFeatureEnabled(enabledFeatures, Feature.Intake)   ? new Intake()  : null;
-  private final IntakeDeployment m_IntakeDeployment = Constants.isFeatureEnabled(enabledFeatures, Feature.IntakeDeployment) ? new IntakeDeployment() : null;
   
-  private final Climber m_Climber = Constants.isFeatureEnabled(enabledFeatures, Feature.Climber)  ? new Climber() : null;
-
 
   public static final SimulatedBattery GLOBAL_SIMULATED_BATTERY = new SimulatedBattery();
 
@@ -199,13 +193,6 @@ public class RobotContainer {
       NamedCommands.registerCommand("RunFeederIndefinitely", Commands.run(() -> {}, new Subsystem[0]));
     }
 
-    if (Constants.isFeatureEnabled(enabledFeatures, Feature.Climber)) {
-      NamedCommands.registerCommand("AwaitClimberRetract", ClimberCommands.Await.Retract.Actively(m_Climber));
-      NamedCommands.registerCommand("AwaitClimberExtend", ClimberCommands.Await.Extend.Actively(m_Climber));
-    } else {
-      NamedCommands.registerCommand("AwaitClimberRetract", Commands.waitSeconds(5));
-      NamedCommands.registerCommand("AwaitClimberExtend", Commands.waitSeconds(5));
-    }
 
     NamedCommands.registerCommand("AimAtHub", HubCommands.AimAt.Indefinitely(m_robotDrive));
     NamedCommands.registerCommand("AimAtHubIndefinitely", HubCommands.AimAt.Indefinitely(m_robotDrive));
@@ -225,11 +212,6 @@ public class RobotContainer {
       NamedCommands.registerCommand("DeactivateIntake", Commands.none());
     }
 
-    if (Constants.isFeatureEnabled(enabledFeatures, Feature.IntakeDeployment)) {
-      NamedCommands.registerCommand("AwaitIntakeDeploy", IntakeCommands.Deployment.Await.Deploy.Actively(m_IntakeDeployment));
-    } else {
-      NamedCommands.registerCommand("AwaitIntakeDeploy", Commands.waitSeconds(3));
-    }
   }
 
   /**

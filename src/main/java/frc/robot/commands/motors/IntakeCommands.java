@@ -1,13 +1,11 @@
 package frc.robot.commands.motors;
 
 import static edu.wpi.first.units.Units.RPM;
-import static edu.wpi.first.units.Units.Radians;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.generics.GenericMotorControl;
 import frc.robot.subsystems.motors.Intake;
-import frc.robot.subsystems.motors.IntakeDeployment;
 
 public interface IntakeCommands {
   interface Driver {
@@ -64,52 +62,4 @@ public interface IntakeCommands {
     }
   }
 
-  interface Deployment {
-    interface Await {
-      public static interface Deploy {
-        
-        public static class Actively extends GenericMotorControl.Position.Await.Actively {
-          public Actively(IntakeDeployment intakeDeployment) {
-            super(intakeDeployment, IntakeConstants.Control.kDeployedPosition.abs(Radians));
-          }
-        }
-
-        static Command Actively(IntakeDeployment intakeDeployment) {
-          return new Actively(intakeDeployment);
-        }
-    
-        public static class Passively extends GenericMotorControl.Position.Await.Passively {
-          public Passively(IntakeDeployment intakeDeployment) {
-            super(intakeDeployment, IntakeConstants.Control.kDeployedPosition.abs(Radians));
-          }
-        }
-
-        static Command Passively(IntakeDeployment intakeDeployment) {
-          return new Passively(intakeDeployment);
-        }
-      }
-    
-      public static interface Retract {
-        public static class Actively extends GenericMotorControl.Position.Await.Actively {
-          public Actively(IntakeDeployment intakeDeployment) {
-            super(intakeDeployment, IntakeConstants.Control.kRetractedPosition.abs(Radians));
-          }
-        }
-
-        static Command Actively(IntakeDeployment intakeDeployment) {
-          return new Actively(intakeDeployment);
-        }
-    
-        public static class Passively extends GenericMotorControl.Position.Await.Passively {
-          public Passively(IntakeDeployment intakeDeployment) {
-            super(intakeDeployment, IntakeConstants.Control.kRetractedPosition.abs(Radians));
-          }
-        }
-
-        static Command Passively(IntakeDeployment intakeDeployment) {
-          return new Passively(intakeDeployment);
-        }
-      }
-    }
-  }
 }
