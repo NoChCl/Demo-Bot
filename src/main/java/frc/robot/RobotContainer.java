@@ -28,7 +28,6 @@ import frc.robot.commands.motors.IntakeCommands;
 import frc.robot.commands.motors.ShooterCommands;
 import frc.robot.commands.motors.drivetrain.HubCommands;
 import frc.robot.commands.motors.drivetrain.ResetHeading;
-import frc.robot.commands.targeting.targetingCommand;
 import frc.robot.sensors.PhotonVision;
 import frc.robot.subsystems.AutoBuilder2;
 import frc.robot.subsystems.SwerveDrivetrain;
@@ -65,10 +64,8 @@ public class RobotContainer {
    */
   private final Feature[] enabledFeatures = new Feature[] {
     Feature.Shooter,
-    Feature.Targeter,
     Feature.Indexer,
     Feature.Feeder,
-    //Feature.Climber,
     Feature.Intake,
   };
 
@@ -99,10 +96,6 @@ public class RobotContainer {
   CommandXboxController m_copilotController = enableCopilotController ? new CommandXboxController(OIConstants.kCopilotControllerPort) : null;
 
   public ArrayList<String> runningCommands = new ArrayList<String>();
-
-  boolean isTargeting = false;
-  boolean targetIsHub = true;
-  private final targetingCommand m_targetingCommand = new targetingCommand();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -260,10 +253,7 @@ public class RobotContainer {
       m_driverJoystick.button(7).whileTrue(new ShooterCommands.Run.Indefinitely(m_shooter, () -> ShooterConstants.kTargetSpeed.abs(RPM)));
     }
 
-    if (Constants.isFeatureEnabled(enabledFeatures, Feature.Targeter)) {
-      //m_driverJoystick.button(7).whileTrue(new ShooterCommands.Run.Indefinitely(m_shooter, () -> ShooterConstants.kTargetSpeed.abs(RPM)));
-    }
-
+    
     if (enableCopilotController) {
       if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter)) {
         m_copilotController.leftTrigger(kTriggerActivationThreshold).whileTrue(createShooterSpoolCommand());
@@ -305,13 +295,6 @@ public class RobotContainer {
   }
 
   private Command createShooterSpoolCommand() {
-    if (Constants.isFeatureEnabled(enabledFeatures, Feature.Targeter)) {
-      return Commands.parallel(
-        Commands.run(() -> m_targetingCommand.BroadcastDist(m_robotDrive.getPose(), targetIsHub)),
-        ShooterCommands.Run.Indefinitely(m_shooter, m_targetingCommand::ConsumeShooterCompute)
-      );
-    }
-
     return ShooterCommands.Run.Indefinitely(m_shooter);
   }
 
@@ -323,9 +306,8 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer, Feature.Feeder)) {
       return ShooterCommands.ShooterDependant.Parallel(
         m_shooter,
-        m_targetingCommand::ConsumeShooterCompute,
+        200,
         Commands.parallel(
-          Commands.run(() -> m_targetingCommand.BroadcastDist(m_robotDrive.getPose(), targetIsHub)),
           createShooterFeederCommand(),
           createContinuousIndexerFeedCommand(),
           new LedStripScrollYellow(m_ledStrip)
@@ -336,9 +318,8 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer)) {
       return ShooterCommands.ShooterDependant.Parallel(
         m_shooter,
-        m_targetingCommand::ConsumeShooterCompute,
+        200,
         Commands.parallel(
-          Commands.run(() -> m_targetingCommand.BroadcastDist(m_robotDrive.getPose(), targetIsHub)),
           createContinuousIndexerFeedCommand(),
           new LedStripScrollYellow(m_ledStrip)
         )
@@ -348,9 +329,8 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)) {
       return ShooterCommands.ShooterDependant.Parallel(
         m_shooter,
-        m_targetingCommand::ConsumeShooterCompute,
+        200,
         Commands.parallel(
-          Commands.run(() -> m_targetingCommand.BroadcastDist(m_robotDrive.getPose(), targetIsHub)),
           createShooterFeederCommand(),
           new LedStripScrollYellow(m_ledStrip)
         )
@@ -367,9 +347,8 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer, Feature.Feeder)) {
       return ShooterCommands.ShooterDependant.Sequence(
         m_shooter,
-        m_targetingCommand::ConsumeShooterCompute,
+        200,
         Commands.deadline(
-          Commands.run(() -> m_targetingCommand.BroadcastDist(m_robotDrive.getPose(), targetIsHub)),
           createIndexedShotBurstCommand(kAutoShootStepCount),
           createShooterFeederCommand()
         )
@@ -379,9 +358,8 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer)) {
       return ShooterCommands.ShooterDependant.Sequence(
         m_shooter,
-        m_targetingCommand::ConsumeShooterCompute,
+        200,
         Commands.deadline(
-          Commands.run(() -> m_targetingCommand.BroadcastDist(m_robotDrive.getPose(), targetIsHub)),
           createIndexedShotBurstCommand(kAutoShootStepCount)
         )
       );
@@ -390,9 +368,8 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)) {
       return ShooterCommands.ShooterDependant.Sequence(
         m_shooter,
-        m_targetingCommand::ConsumeShooterCompute,
+        200,
         Commands.deadline(
-          Commands.run(() -> m_targetingCommand.BroadcastDist(m_robotDrive.getPose(), targetIsHub)),
           createShooterFeederCommand().withTimeout(1.5)
         )
       );
