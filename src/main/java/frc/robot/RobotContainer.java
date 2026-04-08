@@ -306,7 +306,7 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer, Feature.Feeder)) {
       return ShooterCommands.ShooterDependant.Parallel(
         m_shooter,
-        200,
+        ShooterConstants.kTargetSpeed.abs(RPM),
         Commands.parallel(
           createShooterFeederCommand(),
           createContinuousIndexerFeedCommand(),
@@ -318,7 +318,7 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer)) {
       return ShooterCommands.ShooterDependant.Parallel(
         m_shooter,
-        200,
+        ShooterConstants.kTargetSpeed.abs(RPM),
         Commands.parallel(
           createContinuousIndexerFeedCommand(),
           new LedStripScrollYellow(m_ledStrip)
@@ -329,7 +329,7 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)) {
       return ShooterCommands.ShooterDependant.Parallel(
         m_shooter,
-        200,
+        ShooterConstants.kTargetSpeed.abs(RPM),
         Commands.parallel(
           createShooterFeederCommand(),
           new LedStripScrollYellow(m_ledStrip)
@@ -347,7 +347,7 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer, Feature.Feeder)) {
       return ShooterCommands.ShooterDependant.Sequence(
         m_shooter,
-        200,
+        ShooterConstants.kTargetSpeed.abs(RPM),
         Commands.deadline(
           createIndexedShotBurstCommand(kAutoShootStepCount),
           createShooterFeederCommand()
@@ -358,7 +358,7 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer)) {
       return ShooterCommands.ShooterDependant.Sequence(
         m_shooter,
-        200,
+        ShooterConstants.kTargetSpeed.abs(RPM),
         Commands.deadline(
           createIndexedShotBurstCommand(kAutoShootStepCount)
         )
@@ -368,7 +368,7 @@ public class RobotContainer {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)) {
       return ShooterCommands.ShooterDependant.Sequence(
         m_shooter,
-        200,
+        ShooterConstants.kTargetSpeed.abs(RPM),
         Commands.deadline(
           createShooterFeederCommand().withTimeout(1.5)
         )
