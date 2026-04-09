@@ -301,9 +301,10 @@ public class RobotContainer {
     return ShooterCommands.Run.Indefinitely(m_shooter);
   }
 
-  private Command createShooterSpoolPercentCommand(DoubleSupplier percent) {
-    double targRPM = ShooterConstants.kFreeSpeed.in(RPM)*percent.getAsDouble();
-    return ShooterCommands.Run.Indefinitely(m_shooter, targRPM);
+  private Command createShooterSpoolPercentCommand(DoubleSupplier percentSupplier) {
+    return ShooterCommands.Run.Indefinitely(
+      m_shooter,
+      () -> ShooterConstants.kFreeSpeed.in(RPM)*percentSupplier.getAsDouble());
   }
 
   private Command createShooterFeederCommand() {
