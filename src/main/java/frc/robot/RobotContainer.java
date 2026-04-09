@@ -139,7 +139,9 @@ public class RobotContainer {
   private ToggleCommand autonFeeder = new ToggleCommand();
   private ToggleCommand autonIntake = new ToggleCommand();
   private static final int kAutoShootStepCount = 10;
-  private static final double kTriggerActivationThreshold = 0.5;
+  private static final double kLTriggerActivationThreshold = 0.1;
+  private static final double kRTriggerActivationThreshold = 0.5;
+
 
   /**
    * Register all named commands in Pathplanner
@@ -256,11 +258,11 @@ public class RobotContainer {
     
     if (enableCopilotController) {
       if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter)) {
-        m_copilotController.leftTrigger(kTriggerActivationThreshold).whileTrue(createShooterSpoolCommand());
+        m_copilotController.leftTrigger(kLTriggerActivationThreshold).whileTrue(createShooterSpoolPercentCommand(m_copilotController.getLeftTriggerAxis()));
       }
 
       if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter, Feature.Indexer)) {
-        m_copilotController.rightTrigger(kTriggerActivationThreshold).whileTrue(createShootSequenceCommand());
+        m_copilotController.rightTrigger(kRTriggerActivationThreshold).whileTrue(createShootSequenceCommand());
       }
 
       if (Constants.isFeatureEnabled(enabledFeatures, Feature.Intake)) {
@@ -296,6 +298,11 @@ public class RobotContainer {
 
   private Command createShooterSpoolCommand() {
     return ShooterCommands.Run.Indefinitely(m_shooter);
+  }
+
+  private Command createShooterSpoolPercentCommand(double percent) {
+    double targRPM = ShooterConstants.kFreeSpeed.in(RPM)*percent;
+    return ShooterCommands.Run.Indefinitely(m_shooter, targRPM);
   }
 
   private Command createShooterFeederCommand() {
