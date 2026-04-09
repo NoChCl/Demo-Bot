@@ -7,6 +7,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.RPM;
 
 import java.util.ArrayList;
+import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -258,7 +259,7 @@ public class RobotContainer {
     
     if (enableCopilotController) {
       if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter)) {
-        m_copilotController.leftTrigger(kLTriggerActivationThreshold).whileTrue(createShooterSpoolPercentCommand(m_copilotController.getLeftTriggerAxis()));
+        m_copilotController.leftTrigger(kLTriggerActivationThreshold).whileTrue(createShooterSpoolPercentCommand(m_copilotController::getLeftTriggerAxis));
       }
 
       if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter, Feature.Indexer)) {
@@ -300,8 +301,8 @@ public class RobotContainer {
     return ShooterCommands.Run.Indefinitely(m_shooter);
   }
 
-  private Command createShooterSpoolPercentCommand(double percent) {
-    double targRPM = ShooterConstants.kFreeSpeed.in(RPM)*percent;
+  private Command createShooterSpoolPercentCommand(DoubleSupplier percent) {
+    double targRPM = ShooterConstants.kFreeSpeed.in(RPM)*percent.getAsDouble();
     return ShooterCommands.Run.Indefinitely(m_shooter, targRPM);
   }
 
