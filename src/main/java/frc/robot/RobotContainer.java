@@ -313,37 +313,25 @@ public class RobotContainer {
 
   private Command createShootSequenceCommand() {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer, Feature.Feeder)) {
-      return ShooterCommands.ShooterDependant.Parallel(
-        m_shooter,
-        ShooterConstants.kTargetSpeed.abs(RPM),
-        Commands.parallel(
+      return Commands.parallel(
           createShooterFeederCommand(),
           createContinuousIndexerFeedCommand(),
           new LedStripScrollYellow(m_ledStrip)
-        )
-      );
+        );
     }
 
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer)) {
-      return ShooterCommands.ShooterDependant.Parallel(
-        m_shooter,
-        ShooterConstants.kTargetSpeed.abs(RPM),
-        Commands.parallel(
+      return Commands.parallel(
           createContinuousIndexerFeedCommand(),
           new LedStripScrollYellow(m_ledStrip)
-        )
-      );
+        );
     }
 
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)) {
-      return ShooterCommands.ShooterDependant.Parallel(
-        m_shooter,
-        ShooterConstants.kTargetSpeed.abs(RPM),
-        Commands.parallel(
+      return Commands.parallel(
           createShooterFeederCommand(),
           new LedStripScrollYellow(m_ledStrip)
-        )
-      );
+        );
     }
 
     return Commands.parallel(
