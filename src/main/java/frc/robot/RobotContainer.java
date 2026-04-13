@@ -13,34 +13,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Constants.LedConfigs;
-import frc.robot.Constants.Feature;
-import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.ToggleCommand;
-import frc.robot.commands.ledstrip.LedStripScrollRainbow;
-import frc.robot.commands.ledstrip.LedStripScrollYellow;
-import frc.robot.commands.ledstrip.LedStripSetAlianceColor;
-import frc.robot.commands.ledstrip.LedStripSetGreen;
-import frc.robot.commands.motors.FeederCommands;
-import frc.robot.commands.motors.Indexer.UpperIndexerCommands;
-import frc.robot.commands.motors.Indexer.LowerIndexerCommands;
-import frc.robot.commands.motors.IntakeCommands;
-import frc.robot.commands.motors.ShooterCommands;
-import frc.robot.commands.motors.drivetrain.HubCommands;
-import frc.robot.commands.motors.drivetrain.ResetHeading;
-import frc.robot.sensors.PhotonVision;
-import frc.robot.subsystems.AutoBuilder2;
-import frc.robot.subsystems.SwerveDrivetrain;
-import frc.robot.subsystems.LedStrip;
-import frc.robot.subsystems.motors.BeltFeeder;
-import frc.robot.subsystems.motors.Intake;
-import frc.robot.subsystems.motors.LonelyTalonFx;
-import frc.robot.subsystems.motors.Shooter;
-import frc.robot.subsystems.motors.UpperIndexer;
-import frc.robot.subsystems.motors.LowerIndexer;
-import frc.robot.utils.SimulatedBattery;
-import frc.robot.sensors.ColorSensor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -52,6 +24,34 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.Feature;
+import frc.robot.Constants.LedConfigs;
+import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.ToggleCommand;
+import frc.robot.commands.ledstrip.LedStripScrollRainbow;
+import frc.robot.commands.ledstrip.LedStripScrollYellow;
+import frc.robot.commands.ledstrip.LedStripSetAlianceColor;
+import frc.robot.commands.ledstrip.LedStripSetGreen;
+import frc.robot.commands.motors.FeederCommands;
+import frc.robot.commands.motors.IntakeCommands;
+import frc.robot.commands.motors.ShooterCommands;
+import frc.robot.commands.motors.Indexer.LowerIndexerCommands;
+import frc.robot.commands.motors.Indexer.UpperIndexerCommands;
+import frc.robot.commands.motors.drivetrain.HubCommands;
+import frc.robot.commands.motors.drivetrain.ResetHeading;
+import frc.robot.sensors.ColorSensor;
+import frc.robot.sensors.PhotonVision;
+import frc.robot.subsystems.AutoBuilder2;
+import frc.robot.subsystems.LedStrip;
+import frc.robot.subsystems.SwerveDrivetrain;
+import frc.robot.subsystems.motors.BeltFeeder;
+import frc.robot.subsystems.motors.Intake;
+import frc.robot.subsystems.motors.LonelyTalonFx;
+import frc.robot.subsystems.motors.LowerIndexer;
+import frc.robot.subsystems.motors.Shooter;
+import frc.robot.subsystems.motors.UpperIndexer;
+import frc.robot.utils.SimulatedBattery;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -311,6 +311,33 @@ public class RobotContainer {
     return Commands.run(() -> m_Feeder.setEffort(1.0), m_Feeder);
   }
 
+  private Command createSteppingShootSequenceCommand() {
+  if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer, Feature.Feeder)) {
+    return Commands.parallel(
+      createShooterFeederCommand(),
+      createContinuousSteppingIndexerFeedCommand(),
+      new LedStripScrollYellow(m_ledStrip)
+    );
+  }
+
+  if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer)) {
+    return Commands.parallel(
+      createContinuousSteppingIndexerFeedCommand(),
+      new LedStripScrollYellow(m_ledStrip)
+    );
+  }
+
+  if (Constants.isFeatureEnabled(enabledFeatures, Feature.Feeder)) {
+    return Commands.parallel(
+      createShooterFeederCommand(),
+      new LedStripScrollYellow(m_ledStrip)
+    );
+  }
+
+  return Commands.none();
+}
+
+
   private Command createShootSequenceCommand() {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer, Feature.Feeder)) {
       return Commands.parallel(
@@ -379,6 +406,13 @@ public class RobotContainer {
   }
 
   private Command createContinuousIndexerFeedCommand() {
+    return new ParallelCommandGroup(
+      Commands.run(() -> m_LowerIndexer.setEffort(0.6), m_LowerIndexer),
+      Commands.run(() -> m_UpperIndexer.setEffort(1), m_UpperIndexer)
+    );
+  }
+
+  private Command createContinuousSteppingIndexerFeedCommand() {
     return Commands.repeatingSequence(createSingleIndexStepCommand());
   }
 

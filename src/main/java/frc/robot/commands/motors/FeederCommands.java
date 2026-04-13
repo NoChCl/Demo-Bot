@@ -4,11 +4,11 @@ import static edu.wpi.first.units.Units.RPM;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.FeederConstants;
-import frc.robot.commands.generics.GenericFlexMotorControl;
+import frc.robot.commands.generics.GenericMotorControl;
 import frc.robot.subsystems.motors.BeltFeeder;
 
 public interface FeederCommands {
-  public class Stop extends GenericFlexMotorControl.Stop {
+  public class Stop extends GenericMotorControl.Stop {
     public Stop(BeltFeeder feeder) {
       super(feeder);
     }
@@ -18,7 +18,7 @@ public interface FeederCommands {
   }
 
   interface Await {
-    class Actively extends GenericFlexMotorControl.Velocity.Await.Actively {
+    class Actively extends GenericMotorControl.Velocity.Await.Actively {
       public Actively(BeltFeeder feeder) {
         super(feeder, FeederConstants.Control.kTargetSpeed.in(RPM));
       }
@@ -28,7 +28,7 @@ public interface FeederCommands {
       return new Actively(feeder);
     }
 
-    class Passively extends GenericFlexMotorControl.Velocity.Await.Passively {
+    class Passively extends GenericMotorControl.Velocity.Await.Passively {
       public Passively(BeltFeeder feeder) {
         super(feeder, FeederConstants.Control.kTargetSpeed.in(RPM));
       }
@@ -38,7 +38,7 @@ public interface FeederCommands {
       return new Passively(feeder);
     }
   }
-  class Run extends GenericFlexMotorControl.Velocity.Set {
+  class Run extends GenericMotorControl.Velocity.Set {
     public Run(BeltFeeder feeder) {
       super(feeder, FeederConstants.Control.kTargetSpeed.in(RPM));
     }
