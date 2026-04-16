@@ -13,6 +13,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -260,10 +261,12 @@ public class RobotContainer {
     if (enableCopilotController) {
       if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter)) {
         m_copilotController.leftTrigger(kLTriggerActivationThreshold).whileTrue(createShooterSpoolPercentCommand(m_copilotController::getLeftTriggerAxis));
+        m_copilotController.button(5).whileTrue(Commands.run(() -> m_shooter.setEffort(-1), m_shooter));
       }
 
       if (Constants.isFeatureEnabled(enabledFeatures, Feature.Shooter, Feature.Indexer)) {
         m_copilotController.rightTrigger(kRTriggerActivationThreshold).whileTrue(createShootSequenceCommand());
+        m_copilotController.button(6).whileTrue(createReverseShootSequenceCommand());
       }
 
       if (Constants.isFeatureEnabled(enabledFeatures, Feature.Intake)) {
@@ -366,6 +369,15 @@ public class RobotContainer {
       new LedStripScrollYellow(m_ledStrip)
     );
   }
+
+  private Command createReverseShootSequenceCommand() {
+  return Commands.parallel(
+      Commands.run(() -> m_Feeder.setEffort(-1.0), m_Feeder),
+      Commands.run(() -> m_LowerIndexer.setEffort(-0.6), m_LowerIndexer),
+      Commands.run(() -> m_UpperIndexer.setEffort(-1), m_UpperIndexer)
+      ); 
+  }
+
 
   private Command createAutonomousShootCommand() {
     if (Constants.isFeatureEnabled(enabledFeatures, Feature.Indexer, Feature.Feeder)) {
