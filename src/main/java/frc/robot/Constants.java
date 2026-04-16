@@ -221,7 +221,7 @@ public final class Constants {
 
     public static final boolean kGyroReversed = false;
 
-    public static final LinearVelocity kMaxSpeed = MetersPerSecond.of(4.8);
+    public static final LinearVelocity kMaxSpeed = MetersPerSecond.of(10);
     public static final AngularVelocity kMaxAngularSpeed = RadiansPerSecond.of(2 * Math.PI);
   }
 
